@@ -112,11 +112,6 @@ class HomePage extends StatelessWidget {
              color: Colors.white,
            ),
            Icon(
-             Icons.list,
-             size:30,
-             color: Colors.white,
-           ),
-           Icon(
              Icons.favorite,
              size:30,
              color: Colors.red,
