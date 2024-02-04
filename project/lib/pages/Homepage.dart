@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:project/widget/CategoriesWidget.dart';
 import 'package:project/widget/HomeAppBar.dart';
 import 'package:project/widget/ItemsWidget.dart';
+import '../widget/UserProfile.dart';
 
 class HomePage extends StatelessWidget {
   @override
@@ -97,7 +98,18 @@ class HomePage extends StatelessWidget {
       ),
        bottomNavigationBar: CurvedNavigationBar(
          backgroundColor: Colors.transparent,
-          onTap: (index) {},
+          onTap: (index) {
+           // Handle bottom navigation bar item taps
+            if (index == 3) {
+              // Navigate to user profile screen
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => UserProfile(), // Replace with your profile widget
+                ),
+              );
+            }
+            },
           height: 70,
          color: Colors.black,
          items: [
