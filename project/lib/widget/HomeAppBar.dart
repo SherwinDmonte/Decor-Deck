@@ -43,7 +43,7 @@ class HomeAppBar extends StatelessWidget {
           ),
           SizedBox(width: 10),
           Icon(
-            Icons.settings,
+            Icons.notifications,
             size:30,
             color: Colors.black,
           ),

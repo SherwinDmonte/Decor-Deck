@@ -1,10 +1,11 @@
-import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:curved_navigation_bar/curved_navigation_bar.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:project/widget/CategoriesWidget.dart';
 import 'package:project/widget/HomeAppBar.dart';
 import 'package:project/widget/ItemsWidget.dart';
-import '../widget/UserProfile.dart';
+import 'package:project/widget/UserProfile.dart';
 
 class HomePage extends StatelessWidget {
   @override
@@ -14,20 +15,17 @@ class HomePage extends StatelessWidget {
         children: [
           HomeAppBar(),
           Container(
-            //temporary height
-            // height: 500,
             padding: EdgeInsets.only(top: 15),
             decoration: BoxDecoration(
               color: Color(0xFFEDECF2),
               borderRadius: BorderRadius.only(
                 topLeft: Radius.circular(35),
                 topRight: Radius.circular(35),
-                ),
               ),
-
+            ),
             child: Column(
               children: [
-                //Search widget
+                // Search widget
                 Container(
                   margin: EdgeInsets.symmetric(horizontal: 15),
                   padding: EdgeInsets.symmetric(horizontal: 15),
@@ -44,21 +42,37 @@ class HomePage extends StatelessWidget {
                         width: 300,
                         child: TextFormField(
                           decoration: InputDecoration(
-                              border: InputBorder.none,
-                              hintText: "Search here..."),
+                            border: InputBorder.none,
+                            hintText: "Search here...",
+                          ),
                         ),
                       ),
                       Spacer(),
-                      Icon(
-                        Icons.camera_alt,
-                        size: 27,
-                        color: Colors.black,
+                      // Camera icon
+                      IconButton(
+                        icon: Icon(
+                          Icons.camera_alt,
+                          size: 27,
+                          color: Colors.black,
+                        ),
+                        onPressed: () async {
+                          // Open the camera when the camera icon is pressed
+                          PickedFile? pickedFile =
+                          await ImagePicker().getImage(source: ImageSource.camera);
+
+                          // Do something with the picked image file (you can save, display, or process it)
+                          if (pickedFile != null) {
+                            // Handle the picked image file
+                            // For example, you can display the image using an Image widget:
+                            // Image.file(File(pickedFile.path))
+                          }
+                        },
                       ),
                     ],
                   ),
                 ),
 
-                //Categoris
+                // Categories
                 Container(
                   alignment: Alignment.centerLeft,
                   margin: EdgeInsets.symmetric(
@@ -68,73 +82,75 @@ class HomePage extends StatelessWidget {
                   child: Text(
                     "Categories",
                     style: TextStyle(
-                        fontSize: 25,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black),
+                      fontSize: 25,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black,
+                    ),
                   ),
                 ),
-                //CATEGORIES WIDGET...................
+                // CATEGORIES WIDGET...................
                 CategoriesWidget(),
 
-                //Items
+                // Items
                 Container(
                   alignment: Alignment.centerLeft,
                   margin: EdgeInsets.symmetric(vertical: 20, horizontal: 10),
                   child: Text(
                     "Best Selling",
                     style: TextStyle(
-                        fontSize: 25,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black),
+                      fontSize: 25,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black,
+                    ),
                   ),
                 ),
 
-                //Items Widget...............
+                // Items Widget...............
                 ItemsWidget(),
               ],
             ),
           ),
         ],
       ),
-       bottomNavigationBar: CurvedNavigationBar(
-         backgroundColor: Colors.transparent,
-          onTap: (index) {
-           // Handle bottom navigation bar item taps
-            if (index == 3) {
-              // Navigate to user profile screen
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => UserProfile(), // Replace with your profile widget
-                ),
-              );
-            }
-            },
-          height: 70,
-         color: Colors.black,
-         items: [
-           Icon(
-           Icons.home,
-           size:30,
-           color: Colors.white,
-           ),
-           Icon(
-             CupertinoIcons.cart_fill,
-             size:30,
-             color: Colors.white,
-           ),
-           Icon(
-             Icons.favorite,
-             size:30,
-             color: Colors.red,
-           ),
-           Icon(
-             Icons.people,
-             size:30,
-             color: Colors.white,
-           ),
-         ],
-       ),
+      bottomNavigationBar: CurvedNavigationBar(
+        backgroundColor: Colors.transparent,
+        onTap: (index) {
+          // Handle bottom navigation bar item taps
+          if (index == 3) {
+            // Navigate to user profile screen
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => UserProfile(), // Replace with your profile widget
+              ),
+            );
+          }
+        },
+        height: 70,
+        color: Colors.black,
+        items: [
+          Icon(
+            Icons.home,
+            size: 30,
+            color: Colors.white,
+          ),
+          Icon(
+            CupertinoIcons.cart_fill,
+            size: 30,
+            color: Colors.white,
+          ),
+          Icon(
+            Icons.favorite,
+            size: 30,
+            color: Colors.red,
+          ),
+          Icon(
+            Icons.people,
+            size: 30,
+            color: Colors.white,
+          ),
+        ],
+      ),
     );
   }
 }
