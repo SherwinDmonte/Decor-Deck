@@ -1,4 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+
+void main() {
+  runApp(MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'User Profile Demo',
+      theme: ThemeData(
+        primarySwatch: Colors.green,
+      ),
+      home: UserProfile(),
+    );
+  }
+}
 
 class UserProfile extends StatefulWidget {
   @override
@@ -6,20 +24,14 @@ class UserProfile extends StatefulWidget {
 }
 
 class _UserProfileState extends State<UserProfile> {
-  // Sample user data
   String username = "Sherwin DMonte";
   String email = "sherwin.d@master.com";
-  String phoneNumber = "1234567890"; // Add phone number
-
-  // Placeholder variables for payment method
+  String phoneNumber = "1234567890";
   String cardNumber = "**** **** **** 1234";
   String expirationDate = "12/24";
   String cvv = "***";
-
-  // Placeholder variable for the profile picture
   AssetImage profileImage = AssetImage("assets/img/pf1.jpg");
 
-  // Function to handle the profile editing dialog
   Future<void> _showEditProfileDialog() async {
     return showDialog<void>(
       context: context,
@@ -33,37 +45,171 @@ class _UserProfileState extends State<UserProfile> {
                   leading: Icon(Icons.photo),
                   title: Text('Change Profile Picture'),
                   onTap: () {
-                    // Implement logic to change profile picture
                     Navigator.of(context).pop();
+                    _navigateToChangeProfilePicture();
                   },
                 ),
                 ListTile(
                   leading: Icon(Icons.email),
                   title: Text('Change Email'),
                   onTap: () {
-                    // Implement logic to change email
-                    Navigator.of(context).pop();
+                    _showChangeEmailDialog();
                   },
                 ),
                 ListTile(
                   leading: Icon(Icons.lock),
                   title: Text('Change Password'),
                   onTap: () {
-                    // Implement logic to change password
-                    Navigator.of(context).pop();
+                    _showChangePasswordDialog();
                   },
                 ),
                 ListTile(
                   leading: Icon(Icons.phone),
                   title: Text('Change Phone Number'),
                   onTap: () {
-                    // Implement logic to change phone number
-                    Navigator.of(context).pop();
+                    _showChangePhoneNumberDialog();
                   },
                 ),
               ],
             ),
           ),
+        );
+      },
+    );
+  }
+
+  void _navigateToChangeProfilePicture() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => ChangeProfilePictureScreen(profileImage),
+      ),
+    );
+  }
+
+  Future<void> _showChangeEmailDialog() async {
+    String newEmail = email;
+
+    return showDialog<void>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Change Email'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              TextField(
+                onChanged: (value) {
+                  newEmail = value;
+                },
+                decoration: InputDecoration(
+                  labelText: 'New Email',
+                ),
+              ),
+            ],
+          ),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text('Cancel'),
+            ),
+            TextButton(
+              onPressed: () {
+                setState(() {
+                  email = newEmail;
+                });
+                Navigator.of(context).pop();
+              },
+              child: Text('Confirm'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Future<void> _showChangePasswordDialog() async {
+    String newPassword = "";
+
+    return showDialog<void>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Change Password'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              TextField(
+                onChanged: (value) {
+                  newPassword = value;
+                },
+                obscureText: true,
+                decoration: InputDecoration(
+                  labelText: 'New Password',
+                ),
+              ),
+            ],
+          ),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text('Cancel'),
+            ),
+            TextButton(
+              onPressed: () {
+                print('New Password: $newPassword');
+                Navigator.of(context).pop();
+              },
+              child: Text('Confirm'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Future<void> _showChangePhoneNumberDialog() async {
+    String newPhoneNumber = phoneNumber;
+
+    return showDialog<void>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Change Phone Number'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              TextField(
+                onChanged: (value) {
+                  newPhoneNumber = value;
+                },
+                decoration: InputDecoration(
+                  labelText: 'New Phone Number',
+                ),
+              ),
+            ],
+          ),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text('Cancel'),
+            ),
+            TextButton(
+              onPressed: () {
+                setState(() {
+                  phoneNumber = newPhoneNumber;
+                });
+                Navigator.of(context).pop();
+              },
+              child: Text('Confirm'),
+            ),
+          ],
         );
       },
     );
@@ -85,7 +231,6 @@ class _UserProfileState extends State<UserProfile> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              // Center the Profile Image with Shadow
               Container(
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
@@ -103,8 +248,6 @@ class _UserProfileState extends State<UserProfile> {
                   backgroundImage: profileImage,
                 ),
               ),
-
-              // Edit Profile Button
               SizedBox(height: 10),
               ElevatedButton(
                 onPressed: () {
@@ -112,6 +255,7 @@ class _UserProfileState extends State<UserProfile> {
                 },
                 style: ElevatedButton.styleFrom(
                   primary: Colors.green,
+                  elevation: 5, // Add elevation here
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(8),
                   ),
@@ -119,13 +263,11 @@ class _UserProfileState extends State<UserProfile> {
                 child: Text(
                   "Edit Profile",
                   style: TextStyle(
-                    color: Colors.white, // Set text color
+                    color: Colors.white,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
               ),
-
-              // Personal Information
               SizedBox(height: 20),
               Container(
                 padding: EdgeInsets.all(16),
@@ -207,8 +349,6 @@ class _UserProfileState extends State<UserProfile> {
                   ],
                 ),
               ),
-
-              // Change Password
               SizedBox(height: 16),
               Container(
                 padding: EdgeInsets.all(16),
@@ -246,14 +386,12 @@ class _UserProfileState extends State<UserProfile> {
                         style: TextStyle(color: Colors.black),
                       ),
                       onTap: () {
-                        // Navigate to change password screen
+                        _showChangePasswordDialog();
                       },
                     ),
                   ],
                 ),
               ),
-
-              // Payment Method
               SizedBox(height: 16),
               Container(
                 padding: EdgeInsets.all(16),
@@ -335,17 +473,14 @@ class _UserProfileState extends State<UserProfile> {
                   ],
                 ),
               ),
-
-              // Log Out
               SizedBox(height: 16),
               TextButton(
                 onPressed: () {
-                  // Handle log out
                   Navigator.pop(context);
                 },
                 style: TextButton.styleFrom(
                   backgroundColor: Colors.green,
-                  // primary: Colors.white, // Removed primary
+                  primary: Colors.white,
                   shadowColor: Colors.black,
                   elevation: 5,
                   padding: EdgeInsets.symmetric(vertical: 12, horizontal: 20),
@@ -358,15 +493,78 @@ class _UserProfileState extends State<UserProfile> {
                   children: [
                     Icon(Icons.exit_to_app),
                     SizedBox(width: 8),
-                    Text(
-                      "Log Out",
-                      style: TextStyle(color: Colors.white), // Set text color
-                    ),
+                    Text("Log Out"),
                   ],
                 ),
               ),
             ],
           ),
+        ),
+      ),
+    );
+  }
+}
+
+class ChangeProfilePictureScreen extends StatelessWidget {
+  final AssetImage previousProfileImage;
+
+  ChangeProfilePictureScreen(this.previousProfileImage);
+
+  void _openGallery(BuildContext context) async {
+    final picker = ImagePicker();
+    final pickedImage = await picker.getImage(source: ImageSource.gallery);
+
+    if (pickedImage != null) {
+      // Do something with the picked image
+      // For now, you can print its path
+      print('Image path: ${pickedImage.path}');
+    } else {
+      print('No image selected.');
+    }
+  }
+
+  void _openCamera(BuildContext context) async {
+    final picker = ImagePicker();
+    final pickedImage = await picker.getImage(source: ImageSource.camera);
+
+    if (pickedImage != null) {
+      // Do something with the picked image
+      // For now, you can print its path
+      print('Image path: ${pickedImage.path}');
+    } else {
+      print('No image selected.');
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Change Profile Picture'),
+      ),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            CircleAvatar(
+              radius: 80,
+              backgroundImage: previousProfileImage,
+            ),
+            SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: () {
+                _openGallery(context);
+              },
+              child: Text('Select from Gallery'),
+            ),
+            SizedBox(height: 10),
+            ElevatedButton(
+              onPressed: () {
+                _openCamera(context);
+              },
+              child: Text('Click Picture'),
+            ),
+          ],
         ),
       ),
     );
